@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Golbarg Ghazinour</title>
+<meta name="description" content="Golbarg Ghazinour: software engineer in Toronto building Go services, web apps and accessible software.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one centred column under a sticky tab bar; each tab is a panel, home holds intro, education and the tech stack grid. */
+:root {
+  --bg: #F3F6F8;
+  --surface: #FFFFFF;
+  --surface-2: #EBF0F3;
+  --ink: #13202A;
+  --ink-soft: #566572;
+  --line: #D6DEE4;
+  --accent: #007A99;
+  --accent-ink: #FFFFFF;
+  --grid: #E3E9ED;
+  --term-bg: #0D151D;
+  --term-fg: #D3DFE7;
+  --term-dim: #71838F;
+  --term-accent: #29C4EA;
+  --term-ok: #7DD893;
+
+  --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.5rem;
+  --step-3: clamp(2.2rem, 6vw, 3.25rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1016; --surface: #111A22; --surface-2: #17222C; --ink: #E2E9EF; --ink-soft: #8D9CA8; --line: #24313D;
+    --accent: #29C4EA; --accent-ink: #06222B; --grid: #111A21;
+    --term-bg: #070C11; --term-fg: #D3DFE7; --term-dim: #6C7E8B; --term-accent: #29C4EA; --term-ok: #7DD893;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1016; --surface: #111A22; --surface-2: #17222C; --ink: #E2E9EF; --ink-soft: #8D9CA8; --line: #24313D;
+  --accent: #29C4EA; --accent-ink: #06222B; --grid: #111A21;
+  --term-bg: #070C11; --term-fg: #D3DFE7; --term-dim: #6C7E8B; --term-accent: #29C4EA; --term-ok: #7DD893;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  margin: 0; color: var(--ink); font-family: var(--font-sans); font-size: var(--step-0); line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: var(--accent); text-underline-offset: 3px; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { margin: 0; line-height: 1.2; text-wrap: balance; font-weight: 600; }
+p { margin: 0; }
+code { font-family: var(--font-mono); font-size: 0.9em; }
+
+.wrap {
+  max-width: 960px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* header + tabs */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding-block: 10px; }
+.brand { font-family: var(--font-mono); font-weight: 600; font-size: var(--step--1); display: flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink); }
+.brand i { width: 26px; height: 26px; border-radius: 7px; background: var(--accent); color: var(--accent-ink); font-style: normal; display: grid; place-items: center; }
+.tabs { display: flex; align-items: center; gap: 4px; }
+.tab {
+  font-family: var(--font-mono); font-size: var(--step--1); background: none; border: 1px solid transparent; border-radius: 8px;
+  padding: 6px 12px; cursor: pointer; color: var(--ink-soft);
+}
+.tab:hover { color: var(--ink); background: var(--surface-2); }
+.tab[aria-selected="true"] { color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); border-color: color-mix(in srgb, var(--accent) 30%, transparent); }
+.theme-btn { border: 0; background: none; cursor: pointer; padding: 6px; border-radius: 8px; color: var(--ink-soft); display: grid; place-items: center; }
+.theme-btn:hover { color: var(--accent); }
+.theme-btn svg { width: 17px; height: 17px; }
+
+main { padding-block: 48px 64px; }
+.panel { display: grid; gap: 56px; }
+.sec-label { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); margin-bottom: 16px; }
+.sec-label::before { content: "// "; color: var(--ink-soft); }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+
+/* home: intro */
+.intro { display: grid; gap: 18px; }
+.intro__role { font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-soft); display: flex; align-items: center; gap: 8px; }
+.intro__role .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--term-ok); box-shadow: 0 0 0 3px color-mix(in srgb, var(--term-ok) 25%, transparent); }
+.intro h1 { font-size: var(--step-3); letter-spacing: -0.025em; }
+.intro p.lede { font-size: var(--step-1); color: var(--ink-soft); max-width: 60ch; line-height: 1.55; }
+.intro p.lede strong { color: var(--ink); font-weight: 500; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.btn {
+  font-family: var(--font-mono); font-size: var(--step--1); text-decoration: none; cursor: pointer;
+  padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+}
+.btn:hover { border-color: var(--accent); color: var(--accent); }
+.btn--primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn--primary:hover { color: var(--accent-ink); filter: brightness(1.08); }
+
+/* home: stack */
+.stack { display: grid; gap: 22px; }
+.stack__group { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 12px 20px; align-items: start; }
+.stack__group h3 { font-family: var(--font-mono); font-size: var(--step--1); font-weight: 500; color: var(--ink-soft); padding-top: 10px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.tile {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  font-weight: 500; font-size: 0.9375rem; transition: border-color .15s ease, transform .15s ease;
+}
+.tile:hover { border-color: var(--accent); transform: translateY(-1px); }
+.tile b {
+  flex: none; width: 30px; height: 30px; border-radius: 7px; display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 0.72rem; font-weight: 600;
+  background: color-mix(in srgb, var(--c, var(--accent)) 16%, var(--surface)); color: color-mix(in srgb, var(--c, var(--accent)) 70%, var(--ink));
+}
+.tile--main { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+.stack__note { font-size: var(--step--1); color: var(--ink-soft); }
+.stack__note b { color: var(--accent); font-weight: 500; }
+
+/* home: education */
+.edu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.edu .card { padding: 20px; display: grid; gap: 6px; align-content: start; }
+.edu__when { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+.edu h3 { font-size: var(--step-1); }
+.edu__deg { color: var(--ink-soft); }
+.edu__extra { font-size: var(--step--1); color: var(--ink-soft); margin-top: 6px; }
+.edu__extra b { color: var(--ink); font-weight: 500; }
+
+/* experience */
+.page-head { display: grid; gap: 8px; }
+.page-head h1 { font-size: var(--step-2); }
+.page-head p { color: var(--ink-soft); }
+.jobs { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.job { padding: 22px 24px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 20px; }
+.job h2 { font-size: var(--step-1); }
+.job__org { font-family: var(--font-mono); font-size: var(--step--1); color: var(--accent); }
+.job__when { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); white-space: nowrap; text-align: right; padding-top: 4px; }
+.job ul.points { grid-column: 1 / -1; }
+.job .chips { grid-column: 1 / -1; margin-top: 6px; }
+ul.points { margin: 8px 0 0; padding-left: 18px; display: grid; gap: 4px; color: var(--ink-soft); max-width: 72ch; }
+ul.points li::marker { color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.chips li { font-family: var(--font-mono); font-size: 0.72rem; padding: 2px 8px; border-radius: 6px; background: var(--surface-2); color: var(--ink-soft); }
+
+/* projects */
+.projects { display: grid; gap: 16px; }
+.project { padding: 26px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+.project__body { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.project__meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+.project h2 { font-size: var(--step-2); letter-spacing: -0.01em; }
+.project__lede { font-size: var(--step-1); line-height: 1.45; }
+.project__side { min-width: 0; display: grid; gap: 12px; align-content: start; }
+.mine { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; display: grid; gap: 4px; }
+.mine p:first-child { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
+.links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--font-mono); font-size: var(--step--1); }
+.team { font-size: var(--step--1); color: var(--ink-soft); }
+.team a { color: inherit; }
+.snippet {
+  background: var(--term-bg); color: var(--term-fg); border-radius: 10px; margin: 0; padding: 14px 16px; overflow-x: auto;
+  font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.65; font-variant-numeric: tabular-nums;
+}
+.t-p { color: var(--term-accent); }
+.t-d { color: var(--term-dim); }
+.t-ok { color: var(--term-ok); }
+
+/* contact */
+.contact { padding: 32px; display: grid; gap: 18px; }
+.contact p { color: var(--ink-soft); max-width: 58ch; }
+.email { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.email code { font-size: var(--step-1); color: var(--ink); user-select: all; word-break: break-all; }
+
+footer { padding-block: 0 40px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-soft); }
+
+@media (max-width: 760px) {
+  .stack__group { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .stack__group h3 { padding-top: 0; }
+  .edu, .project { grid-template-columns: minmax(0, 1fr); }
+  .project { padding: 20px; gap: 20px; }
+  main { padding-block: 32px 48px; }
+}
+@media (max-width: 520px) {
+  .top .wrap { justify-content: flex-start; }
+  .brand span { display: none; }
+  .tabs { flex: 1; justify-content: space-between; gap: 2px; }
+  .tab { padding: 6px 8px; }
+  .job { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+  .job__when { text-align: left; }
+  .tiles { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+  .contact { padding: 22px 18px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" data-go="home"><i aria-hidden="true">g</i><span>golbarg ghazinour</span></a>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" type="button" role="tab" id="tab-home" aria-controls="home" aria-selected="true">home</button>
+      <button class="tab" type="button" role="tab" id="tab-experience" aria-controls="experience" aria-selected="false">experience</button>
+      <button class="tab" type="button" role="tab" id="tab-projects" aria-controls="projects" aria-selected="false">projects</button>
+      <button class="tab" type="button" role="tab" id="tab-contact" aria-controls="contact" aria-selected="false">contact</button>
+      <button class="theme-btn" id="theme-btn" type="button" aria-label="Switch light or dark theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- home -->
+  <div class="panel" id="home" role="tabpanel" aria-labelledby="tab-home">
+    <section class="intro" aria-label="Introduction">
+      <p class="intro__role"><span class="dot" aria-hidden="true"></span>software engineer · toronto, on</p>
+      <h1>Golbarg Ghazinour</h1>
+      <p class="lede">I'm a <strong>software engineering intern at CIBC</strong>, building Go microservices that talk over gRPC and run on Kubernetes. I study <strong>computer science at York University</strong> and like backend systems, developer tools and software more people can use.</p>
+      <div class="actions">
+        <button class="btn btn--primary" type="button" data-go="projects">view projects →</button>
+        <button class="btn" type="button" data-go="experience">experience</button>
+        <a class="btn" href="https://github.com/Golbarg-max" target="_blank" rel="noopener">github ↗</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="stack-h">
+      <h2 class="sec-label" id="stack-h">tech stack</h2>
+      <div class="stack">
+        <div class="stack__group">
+          <h3>languages</h3>
+          <ul class="tiles">
+            <li class="tile tile--main"><b style="--c:#00ADD8">Go</b>Go</li>
+            <li class="tile tile--main"><b style="--c:#E76F00">Jv</b>Java</li>
+            <li class="tile tile--main"><b style="--c:#3178C6">TS</b>TypeScript</li>
+            <li class="tile"><b style="--c:#C9A100">JS</b>JavaScript</li>
+            <li class="tile"><b style="--c:#3776AB">Py</b>Python</li>
+            <li class="tile"><b style="--c:#00599C">C++</b>C++</li>
+            <li class="tile"><b style="--c:#4479A1">SQL</b>SQL</li>
+            <li class="tile"><b style="--c:#276DC3">R</b>R</li>
+          </ul>
+        </div>
+        <div class="stack__group">
+          <h3>frontend</h3>
+          <ul class="tiles">
+            <li class="tile tile--main"><b style="--c:#149ECA">Re</b>React</li>
+            <li class="tile"><b style="--c:#E34F26">&lt;/&gt;</b>HTML/CSS</li>
+          </ul>
+        </div>
+        <div class="stack__group">
+          <h3>backend &amp; cloud</h3>
+          <ul class="tiles">
+            <li class="tile"><b style="--c:#2DA6B0">gR</b>gRPC</li>
+            <li class="tile"><b>{}</b>REST APIs</li>
+            <li class="tile"><b style="--c:#326CE5">K8s</b>Kubernetes</li>
+            <li class="tile"><b style="--c:#1D63ED">Dk</b>Docker</li>
+            <li class="tile"><b style="--c:#466BB0">Is</b>Istio</li>
+            <li class="tile"><b style="--c:#3ECF8E">Sb</b>Supabase</li>
+            <li class="tile"><b style="--c:#4479A1">My</b>MySQL</li>
+            <li class="tile"><b style="--c:#4E8FB8">Sq</b>SQLite</li>
+          </ul>
+        </div>
+        <div class="stack__group">
+          <h3>tools &amp; ml</h3>
+          <ul class="tiles">
+            <li class="tile"><b style="--c:#F05032">Git</b>Git</li>
+            <li class="tile"><b>$_</b>Linux</li>
+            <li class="tile"><b style="--c:#60D0E4">Jg</b>Jaeger</li>
+            <li class="tile"><b style="--c:#25A162">JU</b>JUnit</li>
+            <li class="tile"><b style="--c:#EE4C2C">Pt</b>PyTorch</li>
+            <li class="tile"><b style="--c:#7A55C7">Pd</b>Pandas</li>
+          </ul>
+        </div>
+        <p class="stack__note"><b>outlined</b> = what I use most</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="edu-h">
+      <h2 class="sec-label" id="edu-h">education</h2>
+      <div class="edu">
+        <article class="card">
+          <p class="edu__when">2026 – 2028</p>
+          <h3>York University</h3>
+          <p class="edu__deg">Bachelor of Computer Science · GPA 3.7</p>
+          <p class="edu__extra"><b>Coursework:</b> Data Structures &amp; Algorithms, Computer Networks, Databases, Software Design</p>
+        </article>
+        <article class="card">
+          <p class="edu__when">2023 – 2025</p>
+          <h3>University of Toronto</h3>
+          <p class="edu__deg">Bachelor of Statistics</p>
+          <p class="edu__extra"><b>Minors:</b> Computer Science, Applied Mathematics</p>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- experience -->
+  <div class="panel" id="experience" role="tabpanel" aria-labelledby="tab-experience" hidden>
+    <div class="page-head">
+      <p class="sec-label">experience</p>
+      <h1>Where I've worked</h1>
+    </div>
+    <ol class="jobs">
+      <li class="card job">
+        <div><h2>Software Engineering Intern</h2><p class="job__org">CIBC · Toronto</p></div>
+        <p class="job__when">May 2026 – present</p>
+        <ul class="points">
+          <li>Build and maintain Go microservices for currency exchange, with gRPC for communication between services.</li>
+          <li>Deploy distributed systems on Kubernetes with an Istio service mesh, and configure Kiali and Jaeger for production monitoring and tracing.</li>
+          <li>Write dynamic SQL scripts for operational analytics and data management.</li>
+          <li>Work through Jira tickets in an Agile team and take part in code reviews.</li>
+        </ul>
+        <ul class="chips"><li>Go</li><li>gRPC</li><li>Kubernetes</li><li>Istio</li><li>Jaeger</li><li>SQL</li></ul>
+      </li>
+      <li class="card job">
+        <div><h2>Applied Machine Learning Researcher</h2><p class="job__org">Algoverse · Toronto</p></div>
+        <p class="job__when">Jun 2025 – Sep 2025</p>
+        <ul class="points">
+          <li>Analyzed large datasets in Python with statistical methods to find patterns and validate model performance.</li>
+          <li>Built Pandas preprocessing pipelines that improved data quality and cut processing time by 30%.</li>
+          <li>Evaluated pretrained Hugging Face models for tuning and deployment readiness.</li>
+        </ul>
+        <ul class="chips"><li>Python</li><li>Pandas</li><li>Hugging Face</li></ul>
+      </li>
+      <li class="card job">
+        <div><h2>Robotics for Space Exploration</h2><p class="job__org">University of Toronto · team member</p></div>
+        <p class="job__when">Sep 2024 – Sep 2025</p>
+        <ul class="points">
+          <li>Processed sensor data in C++ to improve object detection and navigation for autonomous systems.</li>
+          <li>Shipped real-time improvements with ROS2 on a cross-disciplinary Agile team.</li>
+        </ul>
+        <ul class="chips"><li>C++</li><li>ROS2</li><li>Jira</li></ul>
+      </li>
+    </ol>
+  </div>
+
+  <!-- projects -->
+  <div class="panel" id="projects" role="tabpanel" aria-labelledby="tab-projects" hidden>
+    <div class="page-head">
+      <p class="sec-label">projects</p>
+      <h1>Things I've built</h1>
+    </div>
+    <div class="projects">
+      <article class="card project">
+        <div class="project__body">
+          <p class="project__meta">solo project · 2025</p>
+          <h2>FinTerminal</h2>
+          <p class="project__lede">A Bloomberg-inspired market terminal for checking your portfolio from the command line.</p>
+          <ul class="points">
+            <li>Go CLI built on Cobra, with <code>quote</code> and <code>portfolio add / remove</code> commands that print colour-coded tables.</li>
+            <li>Pulls live quotes from the Alpha Vantage API and calculates gain/loss, ROI and totals against each holding's cost basis.</li>
+            <li>A <code>server</code> command exposes the same data as a REST API with a web dashboard.</li>
+          </ul>
+          <ul class="chips"><li>Go</li><li>Cobra</li><li>REST</li><li>Alpha Vantage</li><li>JavaScript</li></ul>
+          <div class="links"><a href="https://github.com/Golbarg-max/FinTerminal" target="_blank" rel="noopener">view on github ↗</a></div>
+        </div>
+        <div class="project__side">
+          <pre class="snippet"><span class="t-p">$</span> fin portfolio
+<span class="t-d">SYMBOL  SHARES  CURRENT  GAIN/LOSS   RETURN</span>
+AAPL     10.00  $189.95  <span class="t-ok">+$399.50    +26.63%</span>
+MSFT     25.00  $334.20  <span class="t-ok">+$2105.00   +33.68%</span>
+TSLA      5.00  $265.30  <span class="t-ok">+$101.50     +8.29%</span>
+<span class="t-d">TOTAL   $11581.00</span>          <span class="t-ok">+$2606.00   +29.04%</span>
+
+<span class="t-p">$</span> fin quote AAPL
+<span class="t-d">SYMBOL  PRICE    CHANGE   CHANGE%</span>
+AAPL    $189.95  <span class="t-ok">+$2.50   +1.33%</span></pre>
+          <p class="project__meta">sample output from the README</p>
+        </div>
+      </article>
+
+      <article class="card project">
+        <div class="project__body">
+          <p class="project__meta">team of 4 · hackathon · oct 2026</p>
+          <h2>Motif</h2>
+          <p class="project__lede">A browser app that lets someone communicate using any small movement they can comfortably repeat.</p>
+          <ul class="points">
+            <li>Learns a person's own movement, like an eyebrow raise or a small head turn, from the webcam using MediaPipe face landmarks.</li>
+            <li>Each movement must pass separate checks before it controls anything. Motif then scans through phrase groups, and a held movement picks a phrase and speaks the message.</li>
+            <li>Camera images and measurements never leave the device.</li>
+          </ul>
+          <ul class="chips"><li>TypeScript</li><li>MediaPipe</li><li>Supabase</li><li>Vitest</li></ul>
+          <div class="links">
+            <a href="https://github.com/VZhou07/Motif" target="_blank" rel="noopener">view on github ↗</a>
+            <a href="https://devpost.com/software/motif-wcmv8y" target="_blank" rel="noopener">devpost ↗</a>
+          </div>
+        </div>
+        <div class="project__side">
+          <div class="mine">
+            <p>my part</p>
+            <p>I designed and built the caregiver dashboard: its state machine, data model, sound alerts, styles and routing, plus the shared Supabase client it uses for pairing and care requests. I tested it against a real client. I also added "back to start" for assisted (switch) input.</p>
+          </div>
+          <p class="team">built with <a href="https://github.com/VZhou07" target="_blank" rel="noopener">VZhou07</a>, <a href="https://github.com/ethanso88" target="_blank" rel="noopener">ethanso88</a> and <a href="https://github.com/vyviin" target="_blank" rel="noopener">vyviin</a></p>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- contact -->
+  <div class="panel" id="contact" role="tabpanel" aria-labelledby="tab-contact" hidden>
+    <div class="page-head">
+      <p class="sec-label">contact</p>
+      <h1>Let's talk</h1>
+    </div>
+    <section class="card contact" aria-label="Contact details">
+      <p>I'm looking for software engineering internships and new-grad roles, especially in backend systems, infrastructure and full-stack work. The fastest way to reach me is email.</p>
+      <div class="email">
+        <code id="email">golbarg1384@gmail.com</code>
+        <button class="btn" id="copy-btn" type="button">copy</button>
+      </div>
+      <div class="links">
+        <a href="mailto:golbarg1384@gmail.com">send an email ↗</a>
+        <a href="https://github.com/Golbarg-max" target="_blank" rel="noopener">github ↗</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap">© <span id="year">2026</span> Golbarg Ghazinour · Toronto, ON</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var tabs = document.querySelectorAll(".tab");
+
+  // tabs; each panel can be linked to directly, e.g. #projects
+  function show(id, scroll) {
+    if (!document.getElementById(id)) id = "home";
+    tabs.forEach(function (t) {
+      var on = t.getAttribute("aria-controls") === id;
+      t.setAttribute("aria-selected", String(on));
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    try { history.replaceState(null, "", "#" + id); } catch (e) {}
+    if (scroll) window.scrollTo(0, 0);
+  }
+  tabs.forEach(function (t) {
+    t.addEventListener("click", function () { show(t.getAttribute("aria-controls"), true); });
+  });
+  document.querySelectorAll("[data-go]").forEach(function (b) {
+    b.addEventListener("click", function (e) { e.preventDefault(); show(b.dataset.go, true); });
+  });
+  var tablist = document.querySelector(".tabs");
+  tablist.addEventListener("keydown", function (e) {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    var list = Array.prototype.slice.call(tabs);
+    var i = list.indexOf(document.activeElement);
+    if (i < 0) return;
+    var next = list[(i + (e.key === "ArrowRight" ? 1 : list.length - 1)) % list.length];
+    next.focus();
+    show(next.getAttribute("aria-controls"), false);
+  });
+  show(location.hash.slice(1) || "home", false);
+
+  // copy email
+  var copyBtn = document.getElementById("copy-btn");
+  copyBtn.addEventListener("click", function () {
+    var email = document.getElementById("email");
+    function done(msg) { copyBtn.textContent = msg; setTimeout(function () { copyBtn.textContent = "copy"; }, 1800); }
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(email);
+      var s = getSelection(); s.removeAllRanges(); s.addRange(r); done("selected");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(email.textContent).then(function () { done("copied"); }, selectIt);
+    else selectIt();
+  });
+
+  // theme; with no saved choice the page follows the system setting
+  try { var saved = localStorage.getItem("theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  document.getElementById("theme-btn").addEventListener("click", function () {
+    var current = root.getAttribute("data-theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
